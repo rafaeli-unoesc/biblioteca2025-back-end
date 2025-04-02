@@ -64,4 +64,13 @@ app.get('/editora/:id', async (req, res) => {
     res.json(respostaBanco);
 });
 
+app.post('/editora', async (req, res) => {
+    //    const nomeeditora = req.body.nomeeditora;
+    //    const cnpj = req.body.cnpj;
+    //    const endereco = req.body.endereco;
+
+    const respostaBanco = await Editora.create(req.body);
+    res.json(respostaBanco);
+});
+
 app.listen(3000, () => { console.log(`Servidor rodando.`) });
