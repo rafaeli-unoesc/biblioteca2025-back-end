@@ -52,4 +52,16 @@ app.get('/teste', (req, res) => {
     res.send('Teste ok.');
 });
 
-app.listen(4000, () => { console.log(`Servidor rodando.`) });
+//rotas crud da tabela editora
+app.get('/editora', async (req, res) => {
+    const respostaBanco = await Editora.findAll();
+    res.json(respostaBanco);
+});
+
+app.get('/editora/:id', async (req, res) => {
+    const id = req.params.id;
+    const respostaBanco = await Editora.findByPk(id);
+    res.json(respostaBanco);
+});
+
+app.listen(3000, () => { console.log(`Servidor rodando.`) });
