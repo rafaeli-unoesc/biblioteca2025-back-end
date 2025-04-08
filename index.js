@@ -86,4 +86,11 @@ app.put('/editora/:id', async (req, res) => {
     res.json(respostaBanco);
 });
 
+app.delete('/editora/:id', async (req, res) => {
+    const ideditora = req.params.id;
+
+    const respostaBanco = await Editora.destroy({ where: { ideditora } });
+    res.json(respostaBanco);
+});
+
 app.listen(3000, () => { console.log(`Servidor rodando.`) });
