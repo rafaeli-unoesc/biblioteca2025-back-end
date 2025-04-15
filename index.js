@@ -4,6 +4,7 @@ import editora from "./controller/EditoraController.js";
 import autor from "./controller/AutorController.js";
 import categoria from "./controller/CategoriaController.js";
 import livro from "./controller/LivroController.js";
+import usuario from "./controller/UsuarioController.js";
 
 try {
     await banco.authenticate();
@@ -46,5 +47,12 @@ app.get('/livro/:id', livro.selecionar);
 app.post('/livro', livro.inserir);
 app.put('/livro/:id', livro.alterar);
 app.delete('/livro/:id', livro.excluir);
+
+//rotas crud da tabela usuario
+app.get('/usuario', usuario.listar);
+app.get('/usuario/:id', usuario.selecionar);
+app.post('/usuario', usuario.inserir);
+app.put('/usuario/:id', usuario.alterar);
+app.delete('/usuario/:id', usuario.excluir);
 
 app.listen(3000, () => { console.log(`Servidor rodando.`) });
