@@ -5,6 +5,7 @@ import autor from "./controller/AutorController.js";
 import categoria from "./controller/CategoriaController.js";
 import livro from "./controller/LivroController.js";
 import usuario from "./controller/UsuarioController.js";
+import emprestimo from "./controller/EmprestimoController.js";
 
 try {
     await banco.authenticate();
@@ -54,5 +55,11 @@ app.get('/usuario/:id', usuario.selecionar);
 app.post('/usuario', usuario.inserir);
 app.put('/usuario/:id', usuario.alterar);
 app.delete('/usuario/:id', usuario.excluir);
+
+//rotas crud da tabela emprestimo
+app.get('/emprestimo', emprestimo.listar);
+app.get('/emprestimo/:id', emprestimo.selecionar);
+app.post('/emprestar', emprestimo.emprestar);
+app.put('/devolver/:id', emprestimo.devolver);
 
 app.listen(3000, () => { console.log(`Servidor rodando.`) });
