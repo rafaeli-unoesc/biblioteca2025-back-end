@@ -74,19 +74,46 @@ async function emprestar(req, res) {
 }
 
 async function devolver(req, res) {
-    const nomeautor = req.body.nomeautor;
-    const nascimento = req.body.nascimento;
-    const biografia = req.body.biografia;
-    const nacionalidade = req.body.nacionalidade;
-    const foto = req.body.foto;
+    //Lendo os paramentros
+    const idemprestimo = req.params.id;
 
-    const idautor = req.params.id;
+    //verifica se existe o paramentro idemprestimo
+    if (!idemprestimo) {
+        res.status(422).send('O parâmetro idemprestimo é obrigatório.');
+        return;
+    }
 
+    //verifica se o empréstimo existe
+    const emprestimoBanco = await Emprestimo.findByPk(idemprestimo);
+    if (!emprestimoBanco) {
+        res.status(404).send('Empréstimo não encontrado.');
+        return;
+    }
+
+    //verifica se o empréstimo já foi devolvido
+    if (emprestimoBanco.devolucao != null) {
+        res.status(422).send('Empréstimo já foi devolvido.');
+        return;
+    }
+
+    //pega o código do livro emprestado
+    const idlivro = emprestimoBanco.idlivro;
+
+    //setando data de devolução
+    const devolucao = moment().format('YYYY-MM-DD');
+
+    //atualizando data de devolução do emprestimo no banco
     const respostaBanco = await Emprestimo.update(
-        { nomeautor, nascimento, biografia, nacionalidade, foto },
-        { where: { idautor } });
+        { devolucao },
+        { where: {idlivro}});
+
+    //alterando o campo emprestado do livro para false
+    const emprestado = false;
+    await Livro.update(
+        { emprestado },
+        { where: { idlivro } });
+
     res.json(respostaBanco);
 }
-
 
 export default { listar, selecionar, emprestar, devolver };
