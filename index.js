@@ -62,6 +62,7 @@ app.delete('/usuario/:id', usuario.excluir);
 
 //rotas crud da tabela emprestimo
 app.get('/emprestimo', emprestimo.listar);
+app.get('/emprestimo/devolucao/pendente', emprestimo.listarPendentes);
 app.get('/emprestimo/:id', emprestimo.selecionar);
 app.post('/emprestar', emprestimo.emprestar);
 app.put('/devolver/:id', emprestimo.devolver);

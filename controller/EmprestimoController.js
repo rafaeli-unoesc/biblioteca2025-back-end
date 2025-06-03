@@ -8,6 +8,11 @@ async function listar(req, res) {
     res.json(respostaBanco);
 }
 
+async function listarPendentes(req, res) {
+    const respostaBanco = await Emprestimo.findAll({ where: { devolucao: null } });
+    res.json(respostaBanco);
+}
+
 async function selecionar(req, res) {
     const id = req.params.id;
     const respostaBanco = await Emprestimo.findByPk(id);
@@ -116,4 +121,4 @@ async function devolver(req, res) {
     res.json(respostaBanco);
 }
 
-export default { listar, selecionar, emprestar, devolver };
+export default { listar, selecionar, emprestar, devolver, listarPendentes };
