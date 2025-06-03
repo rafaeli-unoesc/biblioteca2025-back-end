@@ -47,6 +47,7 @@ app.delete('/categoria/:id', categoria.excluir);
 
 //rotas crud da tabela livro
 app.get('/livro', livro.listar);
+app.get('/livro/categoria/:id', livro.listarPorCategoria);
 app.get('/livro/:id', livro.selecionar);
 app.post('/livro', livro.inserir);
 app.put('/livro/:id', livro.alterar);

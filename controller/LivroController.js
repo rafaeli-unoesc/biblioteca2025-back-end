@@ -5,6 +5,12 @@ async function listar(req, res) {
     res.json(respostaBanco);
 }
 
+async function listarPorCategoria(req, res) {
+    const idcategoria = req.params.id;
+    const respostaBanco = await Livro.findAll({ where: { idcategoria } });
+    res.json(respostaBanco);
+}
+
 async function selecionar(req, res) {
     const id = req.params.id;
     const respostaBanco = await Livro.findByPk(id);
@@ -44,4 +50,4 @@ async function excluir(req, res) {
     res.json(respostaBanco);
 }
 
-export default { listar, selecionar, inserir, alterar, excluir };
+export default { listar, selecionar, inserir, alterar, excluir, listarPorCategoria };
