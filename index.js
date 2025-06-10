@@ -73,5 +73,6 @@ app.get('/funcionario/:id', funcionario.selecionar);
 app.post('/funcionario', funcionario.inserir);
 app.put('/funcionario/:id', funcionario.alterar);
 app.put('/funcionario/demitir/:id', funcionario.demitir);
+app.put('/funcionario/senha/:id', funcionario.definirsenha);
 
 app.listen(4000, () => { console.log(`Servidor rodando.`) });

@@ -66,4 +66,42 @@ async function demitir(req, res) {
     res.status(200).send('Funcionário demitido com sucesso.');
 }
 
-export default { listar, selecionar, inserir, alterar, demitir };
+async function definirsenha(req, res) {
+    //Lendo os parametros
+    const idfuncionario = req.params.id;
+    const senha = req.body.senha;
+
+    //verifica se existe o paramentro idfuncionario
+    if (!idfuncionario) {
+        res.status(422).send('O parâmetro idfuncionario é obrigatório.');
+        return;
+    }
+
+    //verifica se o funcionário existe
+    const funcionarioBanco = await Funcionario.findByPk(idfuncionario);
+    if (!funcionarioBanco) {
+        res.status(404).send('Funcionário não encontrado.');
+        return;
+    }
+
+    //verifica se o funcionário já foi demitido
+    if (funcionarioBanco.demissao != null) {
+        res.status(422).send('Funcionário já foi demitido.');
+        return;
+    }
+
+    if (senha.length < 6 || senha.length > 20) {
+        res.status(422).send('Tamanho da senha deve ser de 6 a 20 caracteres');
+        return;
+    }
+
+    //alterando o campo emprestado do livro para false
+    const token = null;
+    await Funcionario.update(
+        { senha, token },
+        { where: { idfuncionario } });
+
+    res.status(200).send('Senha do funcionário alterada com sucesso.');
+}
+
+export default { listar, selecionar, inserir, alterar, demitir, definirsenha };
