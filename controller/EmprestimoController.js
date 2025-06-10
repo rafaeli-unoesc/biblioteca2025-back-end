@@ -79,7 +79,7 @@ async function emprestar(req, res) {
 }
 
 async function devolver(req, res) {
-    //Lendo os paramentros
+    //Lendo os parametros
     const idemprestimo = req.params.id;
 
     //verifica se existe o paramentro idemprestimo
@@ -110,7 +110,7 @@ async function devolver(req, res) {
     //atualizando data de devolução do emprestimo no banco
     const respostaBanco = await Emprestimo.update(
         { devolucao },
-        { where: {idlivro}});
+        { where: { idemprestimo } });
 
     //alterando o campo emprestado do livro para false
     const emprestado = false;

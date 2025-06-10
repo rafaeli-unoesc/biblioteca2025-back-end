@@ -33,11 +33,37 @@ async function alterar(req, res) {
     res.json(respostaBanco);
 }
 
-async function excluir(req, res) {
+async function demitir(req, res) {
+    //Lendo os parametros
     const idfuncionario = req.params.id;
+    const demissao = req.body.demissao;
 
-    const respostaBanco = await Funcionario.destroy({ where: { idfuncionario } });
-    res.json(respostaBanco);
+    //verifica se existe o paramentro idfuncionario
+    if (!idfuncionario) {
+        res.status(422).send('O parâmetro idfuncionario é obrigatório.');
+        return;
+    }
+
+    //verifica se o funcionário existe
+    const funcionarioBanco = await Funcionario.findByPk(idfuncionario);
+    if (!funcionarioBanco) {
+        res.status(404).send('Funcionário não encontrado.');
+        return;
+    }
+
+    //verifica se o funcionário já foi demitido
+    if (funcionarioBanco.demissao != null) {
+        res.status(422).send('Funcionário já foi demitido.');
+        return;
+    }
+
+    //alterando o campo emprestado do livro para false
+    const ativo = false;
+    await Funcionario.update(
+        { ativo, demissao },
+        { where: { idfuncionario } });
+
+    res.status(200).send('Funcionário demitido com sucesso.');
 }
 
-export default { listar, selecionar, inserir, alterar, excluir };
+export default { listar, selecionar, inserir, alterar, demitir };
