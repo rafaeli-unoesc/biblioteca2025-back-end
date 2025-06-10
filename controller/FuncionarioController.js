@@ -1,4 +1,5 @@
 import Funcionario from "../model/FuncionarioModel.js";
+import bcrypt from 'bcrypt';
 
 async function listar(req, res) {
     const respostaBanco = await Funcionario.findAll();
@@ -95,10 +96,15 @@ async function definirsenha(req, res) {
         return;
     }
 
+    senha = await bcrypt.hash(senha, 10);
+
     //alterando o campo emprestado do livro para false
     const token = null;
     await Funcionario.update(
-        { senha, token },
+        {
+            senha,
+            token
+        },
         { where: { idfuncionario } });
 
     res.status(200).send('Senha do funcionário alterada com sucesso.');
