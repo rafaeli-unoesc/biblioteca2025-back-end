@@ -1,5 +1,6 @@
 import Funcionario from "../model/FuncionarioModel.js";
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 async function listar(req, res) {
     const respostaBanco = await Funcionario.findAll();
@@ -110,4 +111,48 @@ async function definirsenha(req, res) {
     res.status(200).send('Senha do funcionário alterada com sucesso.');
 }
 
-export default { listar, selecionar, inserir, alterar, demitir, definirsenha };
+async function login(req, res) {
+    //Lendo os parametros
+    const email = req.body.email;
+    const senha = req.body.senha;
+
+    //verifica se existe o paramentro senha e email
+    if (!email || !senha) {
+        res.status(422).send('Os parâmetros email e senha são obrigatórios.');
+        return;
+    }
+
+    //verifica se o funcionário existe
+    const funcionarioBanco = await Funcionario.findOne({ where: { email } });
+    if (!funcionarioBanco) {
+        res.status(404).send('E-mail ou senha inválida.');
+        return;
+    }
+
+    //verifica se o funcionário já foi demitido
+    if (funcionarioBanco.demissao != null) {
+        res.status(422).send('Funcionário já foi demitido.');
+        return;
+    }
+
+    //Compara a senha recebida com a senha criptografada
+    const senhavalida = await bcrypt.compare(senha, funcionarioBanco.senha);
+    if (!senhavalida) {
+        res.status(404).send('E-mail ou senha inválida.');
+        return;
+    }
+
+    //Gerar um token
+    const token = await uuidv4();
+
+    //alterando o campo token do funcionário logado
+    const idfuncionario = funcionarioBanco.idfuncionario;
+
+    await Funcionario.update(
+        { token },
+        { where: { idfuncionario } });
+
+    res.status(200).send(token);
+}
+
+export default { listar, selecionar, inserir, alterar, demitir, definirsenha, login };

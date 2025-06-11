@@ -71,6 +71,7 @@ app.put('/devolver/:id', emprestimo.devolver);
 app.get('/funcionario', funcionario.listar);
 app.get('/funcionario/:id', funcionario.selecionar);
 app.post('/funcionario', funcionario.inserir);
+app.put('/funcionario/login', funcionario.login);
 app.put('/funcionario/:id', funcionario.alterar);
 app.put('/funcionario/demitir/:id', funcionario.demitir);
 app.put('/funcionario/senha/:id', funcionario.definirsenha);
