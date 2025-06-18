@@ -25,11 +25,11 @@ app.get('/teste', (req, res) => {
 });
 
 //rotas crud da tabela editora
-app.get('/editora', editora.listar);
-app.get('/editora/:id', editora.selecionar);
-app.post('/editora', editora.inserir);
-app.put('/editora/:id', editora.alterar);
-app.delete('/editora/:id', editora.excluir);
+app.get('/editora', funcionario.validarToken, editora.listar);
+app.get('/editora/:id', funcionario.validarToken, editora.selecionar);
+app.post('/editora', funcionario.validarToken, editora.inserir);
+app.put('/editora/:id', funcionario.validarToken, editora.alterar);
+app.delete('/editora/:id', funcionario.validarToken, editora.excluir);
 
 //rotas crud da tabela autor
 app.get('/autor', autor.listar);

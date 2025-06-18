@@ -155,4 +155,24 @@ async function login(req, res) {
     res.status(200).send(token);
 }
 
-export default { listar, selecionar, inserir, alterar, demitir, definirsenha, login };
+async function validarToken(req, res, next) {
+    //Lendo os parametros
+    const token = req.headers.token;
+
+    //verifica se existe o paramentro senha e email
+    if (!token) {
+        res.status(422).send('Token é obrigatório.');
+        return;
+    }
+
+    //verifica se o funcionário existe
+    const funcionarioBanco = await Funcionario.findOne({ where: { token } });
+    if (!funcionarioBanco) {
+        res.status(404).send('Token inválido.');
+        return;
+    }
+
+    next();
+}
+
+export default { listar, selecionar, inserir, alterar, demitir, definirsenha, login, validarToken };
